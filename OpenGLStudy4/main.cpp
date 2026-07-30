@@ -16,17 +16,31 @@ using namespace OpenGLStudy;
 constexpr int windowWidth = 800;
 constexpr int windowHeight = 600;
 
+// 查询某个顶点属性在shader里的位置，如果没查到（名字写错，或者没被用到、被编译器优化掉了）就直接抛异常。
+// getAttribLocation本身返回-1表示"没找到"，但如果不在这里主动判断，-1会被后面的glEnableVertexAttribArray/
+// glVertexAttribPointer当成一个合法槽位号使用（隐式转成GLuint后会变成一个巨大的数），触发GL_INVALID_VALUE，
+// 而且报错的地方跟真正的原因（属性名不存在）离得很远，不好排查。
+GLint requireAttribLocation(const Shader& shader, std::string_view name)
+{
+	GLint location = shader.getAttribLocation(std::string(name));
+	if (location == -1)
+	{
+		throw std::runtime_error(std::string("Vertex attribute not found in shader: ") + std::string(name));
+	}
+	return location;
+}
+
 // 用"分开存储"的策略准备一个矩形的顶点数据：
 // 位置(position)和颜色(color)分别放在两个独立的VBO里，
 // 通过同一个VAO把它们的读取方式关联起来；另外用一个EBO(索引缓冲区)
 // 复用顶点，只存4个顶点、靠索引拼出2个三角形，而不是重复写6个顶点。
 void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 {
-	//0.动态获取位置：不写死0/1，而是问shader要"aPos"/"aColor"这两个属性实际被分配到了哪个槽位
-	// （如果shader里没有这个名字的属性，或者被编译器优化掉了，会返回-1；这里用GLint而不是GLuint存，
-	// 就是为了让-1能被正常识别，避免变成一个巨大的无符号数导致后面glEnableVertexAttribArray出错）
-	GLint posLocation = shader.getAttribLocation("aPos");
-	GLint colorLocation = shader.getAttribLocation("aColor");
+	//0.动态获取位置：不写死0/1，而是问shader要"aPos"/"aColor"这两个属性实际被分配到了哪个槽位。
+	// 用requireAttribLocation而不是直接调shader.getAttribLocation，是为了在"没查到"（返回-1）的情况下
+	// 立刻抛异常，而不是让-1被当成一个合法槽位号继续往下传
+	GLint posLocation = requireAttribLocation(shader, "aPos");
+	GLint colorLocation = requireAttribLocation(shader, "aColor");
 
 	//1.准备positions colors数据（矩形的4个角，每个顶点3个float：x,y,z 或 r,g,b）
 	// 顺序：左上(0) 右上(1) 右下(2) 左下(3)
@@ -96,8 +110,8 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 void prepareInterleavedBuffer(const VertexArray& vao, const Shader& shader)
 {
 	//0.动态获取位置：同prepareSingleBuffer里的做法
-	GLint posLocation = shader.getAttribLocation("aPos");
-	GLint colorLocation = shader.getAttribLocation("aColor");
+	GLint posLocation = requireAttribLocation(shader, "aPos");
+	GLint colorLocation = requireAttribLocation(shader, "aColor");
 
 	//1.准备interleaved数据：每个顶点后面紧跟着它的颜色，position和color交替存放
 	// 布局：[x,y,z, r,g,b] x4，顺序：左上(0) 右上(1) 右下(2) 左下(3)
