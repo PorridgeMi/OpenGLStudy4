@@ -123,12 +123,12 @@ Shader prepareShader()
 	return Shader("Shaders/rectangle.vert", "Shaders/rectangle.frag");
 }
 
-void render(const VertexArray& vao, const Shader& shader, GLint transformLocation)
+void render(const VertexArray& vao, const Shader& shader, GLint modelLocation)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader.begin();
 
-	UploadRotationZ(transformLocation, (float)glfwGetTime());
+	UploadModelRotationY(modelLocation, (float)glfwGetTime());
 
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -162,11 +162,18 @@ int main()
 			Shader shader = prepareShader();
 
 			prepareSingleBuffer(vao, shader);
-			GLint transformLocation = shader.getUniformLocation("transform");
+			GLint modelLocation = shader.getUniformLocation("model");
+			GLint viewLocation = shader.getUniformLocation("view");
+			GLint projectionLocation = shader.getUniformLocation("projection");
+
+			shader.begin();
+			float aspectRatio = (float)app->getWidth() / (float)app->getHeight();
+			UploadStaticCamera(viewLocation, projectionLocation, aspectRatio);
+			shader.end();
 
 			while (app->update())
 			{
-				render(vao, shader, transformLocation);
+				render(vao, shader, modelLocation);
 			}
 		}
 		catch (const std::exception& e)
