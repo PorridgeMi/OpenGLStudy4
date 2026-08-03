@@ -6,5 +6,6 @@ module;
 export module OpenGLStudy.Transform;
 export namespace OpenGLStudy
 {
-	void UploadRotationZ(int uniformLocation, float timeSeconds);
+	void UploadModelRotationY(int modelLocation, float timeSeconds);
+	void UploadStaticCamera(int viewLocation, int projectionLocation, float aspectRatio);
 }
