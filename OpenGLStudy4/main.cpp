@@ -11,6 +11,7 @@ using namespace OpenGLStudy;
 
 constexpr int windowWidth = 800;
 constexpr int windowHeight = 600;
+const std::string windowName{ "MyWindow" };
 
 GLint requireAttribLocation(const Shader& shader, std::string_view name)
 {
@@ -135,7 +136,7 @@ void render(const VertexArray& vao, const Shader& shader)
 int main()
 {
 	Application* app = Application::getInstance();
-	if (!app->init(windowWidth,windowHeight,"MyWindow"))
+	if (!app->init(windowWidth,windowHeight,windowName))
 	{
 		std::print("Failed to initialize Application");
 		app->destroy();
