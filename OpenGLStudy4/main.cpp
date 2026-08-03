@@ -146,7 +146,6 @@ int main()
 		app->destroy();
 		return -1;
 	}
-	app->setResizeCallback(OnResize);
 	app->setKeyCallback(OnKey);
 	app->setMouseButtonCallback(OnMouseButton);
 	app->setCursorPosCallback(OnCursorPos);
@@ -167,9 +166,22 @@ int main()
 			GLint projectionLocation = shader.getUniformLocation("projection");
 
 			shader.begin();
-			float aspectRatio = (float)app->getWidth() / (float)app->getHeight();
-			UploadStaticCamera(viewLocation, projectionLocation, aspectRatio);
+			UploadView(viewLocation);
+			UploadPerspectiveProjection(projectionLocation, (float)app->getWidth() / (float)app->getHeight());
 			shader.end();
+
+			GLuint programId = shader.id();
+			app->setResizeCallback([programId, projectionLocation](int width, int height)
+			{
+				OnResize(width, height);
+				if (height == 0)
+				{
+					return;
+				}
+				glUseProgram(programId);
+				UploadPerspectiveProjection(projectionLocation, (float)width / (float)height);
+				glUseProgram(0);
+			});
 
 			while (app->update())
 			{
