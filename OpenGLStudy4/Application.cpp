@@ -49,8 +49,14 @@ namespace OpenGLStudy
         }
 
 #ifdef _DEBUG
-        EnableGLDebugOutput();
+        constexpr bool kIsDebugBuild = true;
+#else
+        constexpr bool kIsDebugBuild = false;
 #endif
+        if constexpr (kIsDebugBuild)
+        {
+            EnableGLDebugOutput();
+        }
 
         glfwSetWindowUserPointer(mWindow.get(), this);
         glfwSetFramebufferSizeCallback(mWindow.get(), frambufferSizeCallback);
