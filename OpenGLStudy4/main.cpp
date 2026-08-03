@@ -67,7 +67,7 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices.data(), GL_STATIC_DRAW);
 
-	VertexArray::unbind(); 
+	VertexArray::unbind();
 
 	glDeleteBuffers(1, &posVbo);
 	glDeleteBuffers(1, &colorVbo);
@@ -76,14 +76,14 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 
 void prepareInterleavedBuffer(const VertexArray& vao, const Shader& shader)
 {
-	GLint posLocation = shader.getAttribLocation("aPos");
-	GLint colorLocation = shader.getAttribLocation("aColor");
+	GLint posLocation = requireAttribLocation(shader, "aPos");
+	GLint colorLocation = requireAttribLocation(shader, "aColor");
 
 	std::array vertices{
-		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f, 
-		 0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f, 
-		 0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f, 
-		-0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f, 
+		-0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+		 0.5f,  0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+		 0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,
+		-0.5f, -0.5f, 0.0f,  1.0f, 1.0f, 0.0f,
 	};
 
 	std::array<GLuint, 6> indices{
@@ -91,24 +91,19 @@ void prepareInterleavedBuffer(const VertexArray& vao, const Shader& shader)
 		2, 3, 0
 	};
 
-	
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
 
-	
 	vao.bind();
 
-	
-	constexpr GLsizei stride = 6 * sizeof(float); 
+	constexpr GLsizei stride = 6 * sizeof(float);
 	glEnableVertexAttribArray(posLocation);
-	glVertexAttribPointer(posLocation, 3, GL_FLOAT, GL_FALSE, stride, (void*)0); 
+	glVertexAttribPointer(posLocation, 3, GL_FLOAT, GL_FALSE, stride, (void*)0);
 
 	glEnableVertexAttribArray(colorLocation);
-	glVertexAttribPointer(colorLocation, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float))); 
-
-
+	glVertexAttribPointer(colorLocation, 3, GL_FLOAT, GL_FALSE, stride, (void*)(3 * sizeof(float)));
 
 	GLuint ebo;
 	glGenBuffers(1, &ebo);
