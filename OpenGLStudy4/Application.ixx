@@ -12,11 +12,11 @@ export namespace OpenGLStudy
 	//
 	// 几种回调函数指针类型的别名。之所以用"裸函数指针"而不是std::function，
 	// 是因为GLFW的C API本身要的就是函数指针，用户注册的回调也只能是无捕获的普通函数/lambda。
-	using ResizeCallback = void(*)(int width, int height);
-	using KeyCallback = void(*)(int key, int scancode, int action, int mods);
-	using MouseButtonCallback = void(*)(int button, int action, int mods);
-	using CursorPosCallback = void(*)(double xpos, double ypos);
-	using ScrollCallback = void(*)(double xoffset, double yoffset);
+	using ResizeCallback = std::function<void(int width, int height)>;
+	using KeyCallback = std::function<void(int key, int scancode, int action, int mods)>;
+	using MouseButtonCallback = std::function<void(int button, int action, int mods)>;
+	using CursorPosCallback = std::function<void(double xpos, double ypos)>;
+	using ScrollCallback = std::function<void(double xoffset, double yoffset)>;
 
 	// GLFWwindow*不能用delete释放，必须调用glfwDestroyWindow，
 	// 所以unique_ptr要显式指定"删除器"类型为一个函数指针类型（decltype(&glfwDestroyWindow)）。

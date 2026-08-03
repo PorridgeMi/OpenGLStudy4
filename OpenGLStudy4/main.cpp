@@ -63,7 +63,6 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 
 	//3.把位置、颜色属性的描述信息绑定到vao上
 	vao.bind();
-	vao.bind(); // 连续绑定两次：见下方prepareInterleavedBuffer里的说明，这是AMD驱动那个"首次绑定不生效"怪癖的workaround
 	// 绑定posVbo后调用的glVertexAttribPointer，会把"posLocation号属性槽位应该从posVbo读数据"这件事记录进当前VAO
 	glBindBuffer(GL_ARRAY_BUFFER, posVbo);
 	glEnableVertexAttribArray(posLocation); // 开启shader里aPos实际所在的那个属性槽位
@@ -120,10 +119,6 @@ void prepareInterleavedBuffer(const VertexArray& vao, const Shader& shader)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(), GL_STATIC_DRAW);
 
 	//3.把位置、颜色属性的描述信息绑定到vao上
-	// 这里连续绑定两次是为了绕开某些AMD显卡驱动的一个怪癖——
-	// 刚生成的VAO第一次绑定不会真正生效，必须紧接着再绑定同一个id一次才会生效，
-	// 否则接下来的glVertexAttribPointer会报GL_INVALID_OPERATION（因为"没有真正绑定VAO"）
-	vao.bind();
 	vao.bind();
 
 	//4.从同一个vbo里分别取出位置、颜色属性，用stride和offset区分
