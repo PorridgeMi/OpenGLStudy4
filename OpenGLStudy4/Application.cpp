@@ -48,7 +48,9 @@ namespace OpenGLStudy
             return false;
         }
 
+#ifdef _DEBUG
         EnableGLDebugOutput();
+#endif
 
         glfwSetWindowUserPointer(mWindow.get(), this);
         glfwSetFramebufferSizeCallback(mWindow.get(), frambufferSizeCallback);
