@@ -165,9 +165,13 @@
     <ClCompile Include="CheckError.ixx" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shader.ixx" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexArray.ixx" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

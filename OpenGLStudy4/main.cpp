@@ -6,9 +6,7 @@ import OpenGLStudy.Callback;
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "Transform.h"
 
 using namespace OpenGLStudy;
 
@@ -130,9 +128,7 @@ void render(const VertexArray& vao, const Shader& shader, GLint transformLocatio
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader.begin();
 
-	glm::mat4 transform{ 1.0f };
-	transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-	glUniformMatrix4fv(transformLocation, 1, GL_FALSE, glm::value_ptr(transform));
+	UploadRotationZ(transformLocation, (float)glfwGetTime());
 
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
