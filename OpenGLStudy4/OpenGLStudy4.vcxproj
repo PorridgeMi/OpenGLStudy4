@@ -165,6 +165,8 @@
     <ClCompile Include="CheckError.ixx" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shader.ixx" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Transform.ixx" />
     <ClCompile Include="VertexArray.cpp" />
     <ClCompile Include="VertexArray.ixx" />
     <ClCompile Include="main.cpp" />

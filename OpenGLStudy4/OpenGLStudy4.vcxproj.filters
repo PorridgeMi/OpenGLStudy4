@@ -60,5 +60,11 @@
     <ClCompile Include="Callbacks.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

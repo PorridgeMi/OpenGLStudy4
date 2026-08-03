@@ -3,6 +3,7 @@ import OpenGLStudy.Application;
 import OpenGLStudy.Shader;
 import OpenGLStudy.VertexArray;
 import OpenGLStudy.Callback;
+import OpenGLStudy.Transform;
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
@@ -122,10 +123,13 @@ Shader prepareShader()
 	return Shader("Shaders/rectangle.vert", "Shaders/rectangle.frag");
 }
 
-void render(const VertexArray& vao, const Shader& shader)
+void render(const VertexArray& vao, const Shader& shader, GLint transformLocation)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader.begin();
+
+	UploadRotationZ(transformLocation, (float)glfwGetTime());
+
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -158,10 +162,11 @@ int main()
 			Shader shader = prepareShader();
 
 			prepareSingleBuffer(vao, shader);
+			GLint transformLocation = shader.getUniformLocation("transform");
 
 			while (app->update())
 			{
-				render(vao, shader);
+				render(vao, shader, transformLocation);
 			}
 		}
 		catch (const std::exception& e)
