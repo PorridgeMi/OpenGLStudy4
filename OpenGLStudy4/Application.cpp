@@ -152,30 +152,31 @@ namespace OpenGLStudy
         }
     }
 
-    // 下面这几个set*Callback都是很朴素的"存一下用户传进来的函数指针"，
+    // 下面这几个set*Callback都是很朴素的"存一下用户传进来的std::function"，
+    // 用std::move避免多拷贝一次（std::function内部可能持有堆分配的捕获状态）；
     // 真正被调用是在上面那几个静态回调里
     void Application::setResizeCallback(ResizeCallback callback)
     {
-        mResizeCallback = callback;
+        mResizeCallback = std::move(callback);
     }
 
     void Application::setKeyCallback(KeyCallback callback)
     {
-        mKeyCallback = callback;
+        mKeyCallback = std::move(callback);
     }
 
     void Application::setMouseButtonCallback(MouseButtonCallback callback)
     {
-        mMouseButtonCallback = callback;
+        mMouseButtonCallback = std::move(callback);
     }
 
     void Application::setCursorPosCallback(CursorPosCallback callback)
     {
-        mCursorPosCallback = callback;
+        mCursorPosCallback = std::move(callback);
     }
 
     void Application::setScrollCallback(ScrollCallback callback)
     {
-        mScrollCallback = callback;
+        mScrollCallback = std::move(callback);
     }
 }

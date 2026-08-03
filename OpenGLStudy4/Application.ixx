@@ -10,13 +10,16 @@ export namespace OpenGLStudy
 	// Application模块的接口文件：声明"应用程序/窗口"这个概念对外暴露的一切。
 	// 具体实现（函数体）都写在Application.cpp（模块实现单元）里。
 	//
-	// 几种回调函数指针类型的别名。之所以用"裸函数指针"而不是std::function，
-	// 是因为GLFW的C API本身要的就是函数指针，用户注册的回调也只能是无捕获的普通函数/lambda。
-	using ResizeCallback = void(*)(int width, int height);
-	using KeyCallback = void(*)(int key, int scancode, int action, int mods);
-	using MouseButtonCallback = void(*)(int button, int action, int mods);
-	using CursorPosCallback = void(*)(double xpos, double ypos);
-	using ScrollCallback = void(*)(double xoffset, double yoffset);
+	// 几种"用户自定义回调"的类型别名，用std::function而不是裸函数指针：
+	// 这一层是Application转发给用户代码的接口，用std::function之后用户注册的
+	// 回调可以是带捕获的lambda（比如闭包住某个对象的状态），不再局限于无捕获的普通函数。
+	// 注意这跟下面几个static xxxCallback是两回事：那几个是直接注册给GLFW C API的，
+	// GLFW要求的是裸函数指针，无法用std::function替代，只有这一层"转发目标"能换。
+	using ResizeCallback = std::function<void(int width, int height)>;
+	using KeyCallback = std::function<void(int key, int scancode, int action, int mods)>;
+	using MouseButtonCallback = std::function<void(int button, int action, int mods)>;
+	using CursorPosCallback = std::function<void(double xpos, double ypos)>;
+	using ScrollCallback = std::function<void(double xoffset, double yoffset)>;
 
 	// GLFWwindow*不能用delete释放，必须调用glfwDestroyWindow，
 	// 所以unique_ptr要显式指定"删除器"类型为一个函数指针类型（decltype(&glfwDestroyWindow)）。
@@ -60,12 +63,13 @@ export namespace OpenGLStudy
 		int mHeight{ 600 };
 		WindowPtr mWindow{ nullptr, &glfwDestroyWindow }; // 用unique_ptr自动管理窗口生命周期
 		Application() = default; // 私有构造函数：外部不能直接new Application()，只能走getInstance()
-		// 每种事件各自保存一个"用户注册的回调"，默认是nullptr（表示没有注册，调用前需要判空）
-		ResizeCallback mResizeCallback{ nullptr };
-		KeyCallback mKeyCallback{ nullptr };
-		MouseButtonCallback mMouseButtonCallback{ nullptr };
-		CursorPosCallback mCursorPosCallback{ nullptr };
-		ScrollCallback mScrollCallback{ nullptr };
+		// 每种事件各自保存一个"用户注册的回调"，默认构造的std::function是空的
+		// （效果等价于原来的nullptr），调用前依然要判空，用法不变：if (mXxxCallback) { ... }
+		ResizeCallback mResizeCallback{};
+		KeyCallback mKeyCallback{};
+		MouseButtonCallback mMouseButtonCallback{};
+		CursorPosCallback mCursorPosCallback{};
+		ScrollCallback mScrollCallback{};
 
 	};
 }
