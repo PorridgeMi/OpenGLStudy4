@@ -3,10 +3,10 @@ import OpenGLStudy.Application;
 import OpenGLStudy.Shader;
 import OpenGLStudy.VertexArray;
 import OpenGLStudy.Callback;
+import OpenGLStudy.Transform;
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
-#include "Transform.h"
 
 using namespace OpenGLStudy;
 
