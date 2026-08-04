@@ -146,6 +146,7 @@ int main()
 		app->destroy();
 		return -1;
 	}
+	app->setResizeCallback(OnResize);
 	app->setKeyCallback(OnKey);
 	app->setMouseButtonCallback(OnMouseButton);
 	app->setCursorPosCallback(OnCursorPos);
@@ -170,21 +171,20 @@ int main()
 			UploadPerspectiveProjection(projectionLocation, (float)app->getWidth() / (float)app->getHeight());
 			shader.end();
 
-			GLuint programId = shader.id();
-			app->setResizeCallback([programId, projectionLocation](int width, int height)
-			{
-				OnResize(width, height);
-				if (height == 0)
-				{
-					return;
-				}
-				glUseProgram(programId);
-				UploadPerspectiveProjection(projectionLocation, (float)width / (float)height);
-				glUseProgram(0);
-			});
+			int projectionWidth = app->getWidth();
+			int projectionHeight = app->getHeight();
 
 			while (app->update())
 			{
+				if ((app->getWidth() != projectionWidth || app->getHeight() != projectionHeight) && app->getHeight() != 0)
+				{
+					projectionWidth = app->getWidth();
+					projectionHeight = app->getHeight();
+					shader.begin();
+					UploadPerspectiveProjection(projectionLocation, (float)projectionWidth / (float)projectionHeight);
+					shader.end();
+				}
+
 				render(vao, shader, modelLocation);
 			}
 		}
