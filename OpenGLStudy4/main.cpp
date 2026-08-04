@@ -123,12 +123,13 @@ Shader prepareShader()
 	return Shader("Shaders/rectangle.vert", "Shaders/rectangle.frag");
 }
 
-void render(const VertexArray& vao, const Shader& shader, GLint modelLocation)
+void render(const VertexArray& vao, const Shader& shader, GLint modelLocation, GLint timeLocation)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader.begin();
 
 	UploadModelRotationY(modelLocation, (float)glfwGetTime());
+	glUniform1f(timeLocation, (float)glfwGetTime());
 
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -165,6 +166,7 @@ int main()
 			GLint modelLocation = shader.getUniformLocation("model");
 			GLint viewLocation = shader.getUniformLocation("view");
 			GLint projectionLocation = shader.getUniformLocation("projection");
+			GLint timeLocation = shader.getUniformLocation("time");
 
 			shader.begin();
 			UploadView(viewLocation);
@@ -185,7 +187,7 @@ int main()
 					shader.end();
 				}
 
-				render(vao, shader, modelLocation);
+				render(vao, shader, modelLocation, timeLocation);
 			}
 		}
 		catch (const std::exception& e)
