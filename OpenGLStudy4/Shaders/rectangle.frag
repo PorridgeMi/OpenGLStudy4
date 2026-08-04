@@ -5,5 +5,11 @@ uniform float time;
 void main()
 {
 	float brightness = 0.5 + 0.5 * sin(time);
-	FragColor = vec4(ourColor * brightness, 1.0f);
+	vec3 colorShift = vec3(
+		0.5 + 0.5 * sin(time),
+		0.5 + 0.5 * sin(time + 2.094),
+		0.5 + 0.5 * sin(time + 4.189)
+	);
+	vec3 shiftedColor = mix(ourColor, colorShift, 0.3);
+	FragColor = vec4(shiftedColor * brightness, 1.0f);
 }
