@@ -4,7 +4,7 @@ in vec3 ourColor;
 uniform float time;
 void main()
 {
-	float brightness = 0.5 + 0.5 * sin(time);
+	float brightness = 0.5 + 0.5 * sin(time + 1.047);
 	vec3 colorShift = vec3(
 		0.5 + 0.5 * sin(time),
 		0.5 + 0.5 * sin(time + 2.094),
