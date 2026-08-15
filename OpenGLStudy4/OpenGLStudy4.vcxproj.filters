@@ -66,5 +66,11 @@
     <ClCompile Include="Transform.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Image.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
