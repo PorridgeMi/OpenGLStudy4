@@ -180,7 +180,7 @@ int main()
 		try
 		{
 			Shader shader = prepareShader();
-			Texture texture("Texture/wall.jpg");
+			Texture texture("Textures/wall.jpg");
 
 			prepareSingleBuffer(vao, shader);
 			GLint modelLocation = shader.getUniformLocation("model");

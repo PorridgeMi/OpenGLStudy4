@@ -87,7 +87,7 @@
     </Manifest>
     <PostBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
-xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -109,7 +109,7 @@ xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
     </Manifest>
     <PostBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
-xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,7 +131,7 @@ xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
     </Manifest>
     <PostBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
-xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,7 +155,7 @@ xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
     </Manifest>
     <PostBuildEvent>
       <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
-xcopy /Y /I "$(ProjectDir)Texture" "$(OutDir)Texture\"</Command>
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
