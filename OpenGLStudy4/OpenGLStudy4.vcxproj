@@ -86,7 +86,8 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"</Command>
+      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -107,7 +108,8 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"</Command>
+      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -128,7 +130,8 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"</Command>
+      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +154,8 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"</Command>
+      <Command>xcopy /Y /I "$(ProjectDir)Shaders" "$(OutDir)Shaders\"
+xcopy /Y /I "$(ProjectDir)Textures" "$(OutDir)Textures\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -165,8 +169,12 @@
     <ClCompile Include="Callbacks.cpp" />
     <ClCompile Include="CheckError.cpp" />
     <ClCompile Include="CheckError.ixx" />
+    <ClCompile Include="Image.cpp" />
+    <ClCompile Include="Image.ixx" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shader.ixx" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Texture.ixx" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Transform.ixx" />
     <ClCompile Include="VertexArray.cpp" />
