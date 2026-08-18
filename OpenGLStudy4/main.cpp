@@ -4,6 +4,7 @@ import OpenGLStudy.Shader;
 import OpenGLStudy.VertexArray;
 import OpenGLStudy.Callback;
 import OpenGLStudy.Transform;
+import OpenGLStudy.Texture;
 
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
@@ -28,6 +29,7 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 {
 	GLint posLocation = requireAttribLocation(shader, "aPos");
 	GLint colorLocation = requireAttribLocation(shader, "aColor");
+	GLint texCoordLocation = requireAttribLocation(shader, "aTexCoord");
 
 	std::array positions{
 		-0.5f,  0.5f, 0.0f,
@@ -41,19 +43,29 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 		0.0f, 0.0f, 1.0f,
 		1.0f, 1.0f, 0.0f,
 	};
+	std::array texCoords{
+		0.0f, 1.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
+	};
 	std::array<GLuint, 6> indices{
 		0, 1, 2,
 		2, 3, 0
 	};
-	GLuint posVbo, colorVbo;
+	GLuint posVbo, colorVbo, texCoordVbo;
 	glGenBuffers(1, &posVbo);
 	glGenBuffers(1, &colorVbo);
+	glGenBuffers(1, &texCoordVbo);
 
 	glBindBuffer(GL_ARRAY_BUFFER, posVbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions.data(), GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, colorVbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords.data(), GL_STATIC_DRAW);
 
 	vao.bind();
 	glBindBuffer(GL_ARRAY_BUFFER, posVbo);
@@ -64,6 +76,10 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 	glEnableVertexAttribArray(colorLocation);
 	glVertexAttribPointer(colorLocation, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, texCoordVbo);
+	glEnableVertexAttribArray(texCoordLocation);
+	glVertexAttribPointer(texCoordLocation, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
 	GLuint ebo;
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
@@ -73,6 +89,7 @@ void prepareSingleBuffer(const VertexArray& vao, const Shader& shader)
 
 	glDeleteBuffers(1, &posVbo);
 	glDeleteBuffers(1, &colorVbo);
+	glDeleteBuffers(1, &texCoordVbo);
 	glDeleteBuffers(1, &ebo);
 }
 
@@ -123,7 +140,7 @@ Shader prepareShader()
 	return Shader("Shaders/rectangle.vert", "Shaders/rectangle.frag");
 }
 
-void render(const VertexArray& vao, const Shader& shader, GLint modelLocation, GLint timeLocation)
+void render(const VertexArray& vao, const Shader& shader, const Texture& texture, GLint modelLocation, GLint timeLocation)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader.begin();
@@ -131,10 +148,12 @@ void render(const VertexArray& vao, const Shader& shader, GLint modelLocation, G
 	UploadModelRotationY(modelLocation, (float)glfwGetTime());
 	glUniform1f(timeLocation, (float)glfwGetTime());
 
+	texture.bind();
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	VertexArray::unbind();
+	Texture::unbind();
 	shader.end();
 }
 
@@ -161,16 +180,19 @@ int main()
 		try
 		{
 			Shader shader = prepareShader();
+			Texture texture("Texture/wall.jpg");
 
 			prepareSingleBuffer(vao, shader);
 			GLint modelLocation = shader.getUniformLocation("model");
 			GLint viewLocation = shader.getUniformLocation("view");
 			GLint projectionLocation = shader.getUniformLocation("projection");
 			GLint timeLocation = shader.getUniformLocation("time");
+			GLint textureLocation = shader.getUniformLocation("ourTexture");
 
 			shader.begin();
 			UploadView(viewLocation);
 			UploadPerspectiveProjection(projectionLocation, (float)app->getWidth() / (float)app->getHeight());
+			glUniform1i(textureLocation, 0);
 			shader.end();
 
 			int projectionWidth = app->getWidth();
@@ -187,12 +209,12 @@ int main()
 					shader.end();
 				}
 
-				render(vao, shader, modelLocation, timeLocation);
+				render(vao, shader, texture, modelLocation, timeLocation);
 			}
 		}
 		catch (const std::exception& e)
 		{
-			std::print("Failed to prepare shader, rendering skipped:\n{}\n", e.what());
+			std::print("Failed to initialize rendering resources, rendering skipped:\n{}\n", e.what());
 		}
 	}
 
