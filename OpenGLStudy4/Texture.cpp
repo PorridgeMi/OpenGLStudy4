@@ -7,7 +7,8 @@ import OpenGLStudy.Image;
 
 namespace OpenGLStudy
 {
-	Texture::Texture(std::string_view path)
+	Texture::Texture(std::string_view path, GLuint unit)
+		: mUnit(unit)
 	{
 		Image image(std::string(path).c_str());
 		if (!image.isValid())
@@ -16,6 +17,7 @@ namespace OpenGLStudy
 			throw std::runtime_error(std::string("Failed to load texture: ") + std::string(path));
 		}
 
+		glActiveTexture(GL_TEXTURE0 + mUnit);
 		glGenTextures(1, &mId);
 		glBindTexture(GL_TEXTURE_2D, mId);
 
@@ -37,15 +39,15 @@ namespace OpenGLStudy
 		glDeleteTextures(1, &mId);
 	}
 
-	void Texture::bind(GLuint unit) const
+	void Texture::bind() const
 	{
-		glActiveTexture(GL_TEXTURE0 + unit);
+		glActiveTexture(GL_TEXTURE0 + mUnit);
 		glBindTexture(GL_TEXTURE_2D, mId);
 	}
 
-	void Texture::unbind(GLuint unit)
+	void Texture::unbind() const
 	{
-		glActiveTexture(GL_TEXTURE0 + unit);
+		glActiveTexture(GL_TEXTURE0 + mUnit);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }

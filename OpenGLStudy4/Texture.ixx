@@ -7,15 +7,17 @@ export namespace OpenGLStudy
 	class Texture
 	{
 	public:
-		explicit Texture(std::string_view path);
+		Texture(std::string_view path, GLuint unit);
 		~Texture();
 		Texture(const Texture&) = delete;
 		Texture& operator=(const Texture&) = delete;
 
-		void bind(GLuint unit = 0) const;
-		static void unbind(GLuint unit = 0);
+		void bind() const;
+		void unbind() const;
 		GLuint id() const { return mId; }
+		GLuint unit() const { return mUnit; }
 	private:
 		GLuint mId{};
+		GLuint mUnit{};
 	};
 }

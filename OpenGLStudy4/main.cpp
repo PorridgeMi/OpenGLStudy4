@@ -148,14 +148,12 @@ void render(const VertexArray& vao, const Shader& shader, const Texture& texture
 	UploadModelRotationY(modelLocation, (float)glfwGetTime());
 	glUniform1f(timeLocation, (float)glfwGetTime());
 
-	texture.bind(0);
-	faceTexture.bind(1);
+	texture.bind();
+	faceTexture.bind();
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	VertexArray::unbind();
-	Texture::unbind(0);
-	Texture::unbind(1);
 	shader.end();
 }
 
@@ -182,8 +180,8 @@ int main()
 		try
 		{
 			Shader shader = prepareShader();
-			Texture texture("Textures/wall.jpg");
-			Texture faceTexture("Textures/awesomeface.png");
+			Texture texture("Textures/wall.jpg", 0);
+			Texture faceTexture("Textures/awesomeface.png", 1);
 
 			prepareSingleBuffer(vao, shader);
 			GLint modelLocation = shader.getUniformLocation("model");
@@ -196,8 +194,8 @@ int main()
 			shader.begin();
 			UploadView(viewLocation);
 			UploadPerspectiveProjection(projectionLocation, (float)app->getWidth() / (float)app->getHeight());
-			glUniform1i(textureLocation, 0);
-			glUniform1i(faceTextureLocation, 1);
+			glUniform1i(textureLocation, texture.unit());
+			glUniform1i(faceTextureLocation, faceTexture.unit());
 			shader.end();
 
 			int projectionWidth = app->getWidth();
