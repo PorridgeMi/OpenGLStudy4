@@ -183,7 +183,7 @@ int main()
 		{
 			Shader shader = prepareShader();
 			Texture texture("Textures/wall.jpg");
-			Texture faceTexture("Textures/awsomeface.png");
+			Texture faceTexture("Textures/awesomeface.png");
 
 			prepareSingleBuffer(vao, shader);
 			GLint modelLocation = shader.getUniformLocation("model");
