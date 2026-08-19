@@ -37,13 +37,15 @@ namespace OpenGLStudy
 		glDeleteTextures(1, &mId);
 	}
 
-	void Texture::bind() const
+	void Texture::bind(GLuint unit) const
 	{
+		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, mId);
 	}
 
-	void Texture::unbind()
+	void Texture::unbind(GLuint unit)
 	{
+		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 }

@@ -140,7 +140,7 @@ Shader prepareShader()
 	return Shader("Shaders/rectangle.vert", "Shaders/rectangle.frag");
 }
 
-void render(const VertexArray& vao, const Shader& shader, const Texture& texture, GLint modelLocation, GLint timeLocation)
+void render(const VertexArray& vao, const Shader& shader, const Texture& texture, const Texture& faceTexture, GLint modelLocation, GLint timeLocation)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader.begin();
@@ -148,12 +148,14 @@ void render(const VertexArray& vao, const Shader& shader, const Texture& texture
 	UploadModelRotationY(modelLocation, (float)glfwGetTime());
 	glUniform1f(timeLocation, (float)glfwGetTime());
 
-	texture.bind();
+	texture.bind(0);
+	faceTexture.bind(1);
 	vao.bind();
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	VertexArray::unbind();
-	Texture::unbind();
+	Texture::unbind(0);
+	Texture::unbind(1);
 	shader.end();
 }
 
@@ -181,6 +183,7 @@ int main()
 		{
 			Shader shader = prepareShader();
 			Texture texture("Textures/wall.jpg");
+			Texture faceTexture("Textures/awsomeface.png");
 
 			prepareSingleBuffer(vao, shader);
 			GLint modelLocation = shader.getUniformLocation("model");
@@ -188,11 +191,13 @@ int main()
 			GLint projectionLocation = shader.getUniformLocation("projection");
 			GLint timeLocation = shader.getUniformLocation("time");
 			GLint textureLocation = shader.getUniformLocation("ourTexture");
+			GLint faceTextureLocation = shader.getUniformLocation("faceTexture");
 
 			shader.begin();
 			UploadView(viewLocation);
 			UploadPerspectiveProjection(projectionLocation, (float)app->getWidth() / (float)app->getHeight());
 			glUniform1i(textureLocation, 0);
+			glUniform1i(faceTextureLocation, 1);
 			shader.end();
 
 			int projectionWidth = app->getWidth();
@@ -209,7 +214,7 @@ int main()
 					shader.end();
 				}
 
-				render(vao, shader, texture, modelLocation, timeLocation);
+				render(vao, shader, texture, faceTexture, modelLocation, timeLocation);
 			}
 		}
 		catch (const std::exception& e)

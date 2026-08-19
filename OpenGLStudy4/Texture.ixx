@@ -12,8 +12,8 @@ export namespace OpenGLStudy
 		Texture(const Texture&) = delete;
 		Texture& operator=(const Texture&) = delete;
 
-		void bind() const;
-		static void unbind();
+		void bind(GLuint unit = 0) const;
+		static void unbind(GLuint unit = 0);
 		GLuint id() const { return mId; }
 	private:
 		GLuint mId{};
