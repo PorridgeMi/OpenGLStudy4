@@ -30,8 +30,14 @@ export namespace OpenGLStudy
 		static void cursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 		static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
 
+		Application() = default;
 		~Application() = default;
-		static Application* getInstance();
+		Application(const Application&) = delete;
+		Application& operator=(const Application&) = delete;
+		// init() hands GLFW a raw `this` pointer (glfwSetWindowUserPointer); moving would leave it dangling.
+		Application(Application&&) = delete;
+		Application& operator=(Application&&) = delete;
+
 		bool init(int width = 800, int height = 600, const std::string& title = "OpenGL Study");
 		bool update();
 		void destroy();
@@ -42,12 +48,10 @@ export namespace OpenGLStudy
 		int getWidth() const { return mWidth; }
 		const std::string& getTitle() const { return mTitle; }
 	private:
-		static Application* mInstance;
 		int mWidth{ 800 };
 		int mHeight{ 600 };
 		std::string mTitle{ "OpenGL Study" };
 		WindowPtr mWindow{ nullptr, &glfwDestroyWindow };
-		Application() = default;
 		ResizeCallback mResizeCallback{};
 		KeyCallback mKeyCallback{};
 		MouseButtonCallback mMouseButtonCallback{};

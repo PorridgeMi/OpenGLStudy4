@@ -310,7 +310,8 @@ void render(const VertexArray& vao, const Shader& shader, const Texture& texture
 
 int main()
 {
-	Application* app = Application::getInstance();
+	Application application;
+	Application* app = &application;
 	if (!app->init(windowWidth,windowHeight,windowName))
 	{
 		std::print("Failed to initialize Application");

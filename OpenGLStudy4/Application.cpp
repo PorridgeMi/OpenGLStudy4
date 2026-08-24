@@ -8,17 +8,6 @@ import OpenGLStudy.Debug;
 
 namespace OpenGLStudy
 {
-    Application* Application::mInstance = nullptr;
-
-    Application* Application::getInstance()
-    {
-        if (mInstance == nullptr)
-        {
-            mInstance = new Application();
-        }
-        return mInstance;
-    }
-
     bool Application::init(int width, int height, const std::string& title)
     {
         mWidth = width;
