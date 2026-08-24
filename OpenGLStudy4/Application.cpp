@@ -23,6 +23,7 @@ namespace OpenGLStudy
     {
         mWidth = width;
         mHeight = height;
+        mTitle = title;
 
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -81,6 +82,7 @@ namespace OpenGLStudy
 
     void Application::setTitle(const std::string& title)
     {
+        mTitle = title;
         glfwSetWindowTitle(mWindow.get(), title.c_str());
     }
 

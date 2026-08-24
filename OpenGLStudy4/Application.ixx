@@ -40,10 +40,12 @@ export namespace OpenGLStudy
 		bool isKeyPressed(int key) const;
 		int getHeight() const { return mHeight; }
 		int getWidth() const { return mWidth; }
+		const std::string& getTitle() const { return mTitle; }
 	private:
 		static Application* mInstance;
 		int mWidth{ 800 };
 		int mHeight{ 600 };
+		std::string mTitle{ "OpenGL Study" };
 		WindowPtr mWindow{ nullptr, &glfwDestroyWindow };
 		Application() = default;
 		ResizeCallback mResizeCallback{};
