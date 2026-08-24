@@ -3,7 +3,7 @@ module;
 #include <glfw/glfw3.h>
 export module OpenGLStudy.Application;
 import std;
-import OpenGLStudy.CheckError;
+import OpenGLStudy.Debug;
 
 export namespace OpenGLStudy
 {
@@ -36,6 +36,8 @@ export namespace OpenGLStudy
 		bool update();
 		void destroy();
 		void setTitle(const std::string& title);
+		void setCursorCaptured(bool captured);
+		bool isKeyPressed(int key) const;
 		int getHeight() const { return mHeight; }
 		int getWidth() const { return mWidth; }
 	private:

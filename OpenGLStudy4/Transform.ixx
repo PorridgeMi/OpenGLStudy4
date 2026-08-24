@@ -6,7 +6,7 @@ module;
 export module OpenGLStudy.Transform;
 export namespace OpenGLStudy
 {
-	void UploadModelRotationY(int modelLocation, float timeSeconds);
-	void UploadView(int viewLocation);
-	void UploadPerspectiveProjection(int projectionLocation, float aspectRatio);
+	void UploadModelRotation(int modelLocation, float timeSeconds);
+	void UploadView(int viewLocation, const glm::mat4& view);
+	void UploadPerspectiveProjection(int projectionLocation, float fovDegrees, float aspectRatio);
 }

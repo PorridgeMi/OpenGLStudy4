@@ -2,7 +2,7 @@ module;
 #include <glad/glad.h>
 #include <glfw/glfw3.h>
 
-module OpenGLStudy.CheckError;
+module OpenGLStudy.Debug;
 
 namespace OpenGLStudy
 {

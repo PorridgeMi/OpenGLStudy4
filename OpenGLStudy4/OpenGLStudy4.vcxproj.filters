@@ -17,6 +17,9 @@
       <UniqueIdentifier>{2A6EFB27-FA45-4A1E-9C3B-8B7E6A5F1A10}</UniqueIdentifier>
       <Extensions>vert;frag;glsl</Extensions>
     </Filter>
+    <Filter Include="Textures">
+      <UniqueIdentifier>{0225dd27-5734-430c-891c-addcf3066c80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\rectangle.vert">
@@ -30,16 +33,22 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CheckError.cpp">
+    <ClCompile Include="Debug.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CheckError.ixx">
+    <ClCompile Include="Debug.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Application.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.ixx">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Shader.ixx">
@@ -78,5 +87,13 @@
     <ClCompile Include="Texture.ixx">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\awesomeface.png">
+      <Filter>Textures</Filter>
+    </Image>
+    <Image Include="Textures\wall.jpg">
+      <Filter>Textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

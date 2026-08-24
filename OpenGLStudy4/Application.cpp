@@ -4,7 +4,7 @@ module;
 
 module OpenGLStudy.Application;
 
-import OpenGLStudy.CheckError;
+import OpenGLStudy.Debug;
 
 namespace OpenGLStudy
 {
@@ -82,6 +82,16 @@ namespace OpenGLStudy
     void Application::setTitle(const std::string& title)
     {
         glfwSetWindowTitle(mWindow.get(), title.c_str());
+    }
+
+    void Application::setCursorCaptured(bool captured)
+    {
+        glfwSetInputMode(mWindow.get(), GLFW_CURSOR, captured ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    }
+
+    bool Application::isKeyPressed(int key) const
+    {
+        return glfwGetKey(mWindow.get(), key) == GLFW_PRESS;
     }
 
     void Application::destroy()
